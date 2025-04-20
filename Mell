@@ -1,0 +1,12 @@
+// Aternos Clone: Frontend Prototype in React // This is a simplified version of Aternos interface
+
+import React, { useState } from "react"; import { Button } from "@/components/ui/button"; import { Card, CardContent } from "@/components/ui/card";
+
+export default function AternosClone() { const [servers, setServers] = useState([]); const [serverName, setServerName] = useState(""); const [status, setStatus] = useState({});
+
+const createServer = () => { if (!serverName) return; const id = Date.now(); const newServer = { id, name: serverName, version: "1.20.1", status: "offline", }; setServers([...servers, newServer]); setServerName(""); };
+
+const toggleStatus = (id) => { setServers((prev) => prev.map((server) => server.id === id ? { ...server, status: server.status === "offline" ? "online" : "offline", } : server ) ); };
+
+return ( <div className="p-4 max-w-3xl mx-auto"> <h1 className="text-3xl font-bold mb-4">Aternos Clone</h1> <div className="mb-4"> <input className="border rounded px-3 py-1 w-full" placeholder="Server name" value={serverName} onChange={(e) => setServerName(e.target.value)} /> <Button onClick={createServer} className="mt-2 w-full"> Create Server </Button> </div> <div className="grid gap-4"> {servers.map((server) => ( <Card key={server.id}> <CardContent className="p-4"> <div className="flex justify-between items-center"> <div> <h2 className="text-xl font-semibold">{server.name}</h2> <p>Version: {server.version}</p> <p>Status: {server.status}</p> </div> <Button onClick={() => toggleStatus(server.id)}> {server.status === "offline" ? "Start" : "Stop"} </Button> </div> </CardContent> </Card> ))} </div> </div> ); }
+
